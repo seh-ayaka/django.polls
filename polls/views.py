@@ -17,3 +17,5 @@ def results(request, question_id):
   
 def vote(request, question_id):
     return HttpResponse(f"Você vai votar na pergunta de número {question_id}")
+
+
