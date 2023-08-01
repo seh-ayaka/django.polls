@@ -1,5 +1,7 @@
-<div>
-    <p><b>Código:</b>{{ question.id }}</p>
-    <p><b>Título:</b>{{ question.question_text }}</p>
-    <p><b>Data de publicação:</b>{{ question.pub_date }}</p>
-</div>
+<h1>{{ question.question_text}}</h1>
+
+<ul>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }}</li>
+{% endfor% }
+</ul>
