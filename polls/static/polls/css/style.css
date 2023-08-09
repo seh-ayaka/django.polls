@@ -1,4 +1,10 @@
 body{
-    background-color: rgb(255, 213, 220);
+    background-color: rgb(166, 213, 240);
+}
 
+
+header img{
+    width: 400px;
+    background-color: rgba(255, 250, 230, 0.89);
+    padding: 1% 1%;
 }
