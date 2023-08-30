@@ -21,7 +21,5 @@ urlpatterns = [
 #class based views
     path('listar', views.QuestionListView.as_view(), name="question-list"),
 # página de cadastro  da nova enquete
-    path('cadastrar', 
-        views.QuestionCreateView.as_view(), 
-        name="question-create")
+    path('cadastrar', views.QuestionCreateView.as_view(), name="question-create")
 ]
