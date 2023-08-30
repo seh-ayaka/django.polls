@@ -1,0 +1,8 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+    <h1>Detalhes da Enquete </h1>
+    <p>{{ question.question_text }}</p>
+
+    <p>Data da Publicação: {{ question.pub_date }}</p>
+{% endblock content %}
