@@ -23,5 +23,6 @@ urlpatterns = [
 # página de cadastro  da nova enquete
     path('cadastrar', views.QuestionCreateView.as_view(), name="question-create"),
 
-    path('<int:pk>', views.QuestionDetailView.as_view(), name="question-detail")
+    path('<int:pk>', views.QuestionDetailView.as_view(), name="question-detail"),
+    path('<int:pk>/deletar', views.QuestionDeleteView.as_view(), name='question-delete')
 ]
