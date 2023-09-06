@@ -40,3 +40,9 @@ class QuestionDetailView(DetailView):
 class QuestionDeleteView(DeleteView):
     model = Question
     success_url= reverse_lazy("question-list")
+
+class QuestionListView(ListView):
+    model = Question
+    context_object_name = 'questions'
+    ordering = ['-pub_date']
+    paginate_by = 5    
