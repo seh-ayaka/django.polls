@@ -37,9 +37,16 @@ class QuestionDetailView(DetailView):
     model = Question
     context_object_name = 'question'
 
+from django.contrib import messages
+
 class QuestionDeleteView(DeleteView):
     model = Question
     success_url= reverse_lazy("question-list")
+    success_message = "Enquete excluída com sucesso!"
+
+    def form_valid(self, form):
+        messages.success(self.request, self.success_message)
+        return super().form_valid(form)
 
 class QuestionListView(ListView):
     model = Question
