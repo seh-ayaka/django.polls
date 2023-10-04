@@ -5,4 +5,8 @@ urlpatterns = [
     views.AccountCreateView.as_view(),
     name="signup"
 ),
+    path('account/<int:pk>/edit',
+    views.AccountUpdateView.as_view(),
+    name="account_edit"
+),
 ]

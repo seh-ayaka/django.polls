@@ -56,5 +56,4 @@ class QuestionUpdateView(UpdateView):
     success_url = reverse_lazy('question-list')
     fields = ('question_text',)
 
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+

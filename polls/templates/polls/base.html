@@ -23,8 +23,11 @@
                 <h1>Cabeçalho</h1>
                 <ul>
                     {% if user.is_authenticated %}
-                      <li>{{ user.username }} | <a href="{% url 'logout' %}"> Sair</a></li>
-                    {% else %}
+                      
+                        <a class="p-2 text-dark" href="{% url 'account_edit' pk=user.pk %}">Minha conta</a>
+                        <a class="p-2 text-dark" href="{% url 'logout' %}">Sair</a>
+                      
+                      {% else %}
                         <li><a href="{% url 'signup' %}">Cadastrar</a></li>
                         <li><a href="{% url 'login' %}">Acessar</a></li>
                     {% endif %}
