@@ -1,0 +1,21 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Excluindo a Alternativa Nº {{ object.id }}</h5>
+    </div>
+    <div class="card-body">
+
+        <form method="post">
+            {% csrf_token %}
+            <h6>Você tem certeza que deseja excluir a alternativa abaixo ?</h6>
+            <br />
+            <p>"{{ object.choice_text }}"</p>
+            <br />
+            <button type="submit" class="btn btn-danger">Confirmar</button>
+            <a href="{% url 'poll_edit' pk=object.question.id %}" class="link-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
