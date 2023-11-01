@@ -1,14 +1,26 @@
 {% extends 'polls/base.html' %}
 
-{% block content %}
-    <h1>Detalhes da Enquete </h1>
-    <p>{{ question.question_text }}</p>
-
-    <p>Data da Publicação: {{ question.pub_date }}</p>
-
-    <ul>
-        <li><a href="{% url 'question-list' %}">Listar Enquetes</a></li>
-        <li><a href="{% url 'question-delete' question.pk %}"> Deletar Enquete</a></li>
-        <li><a href="{% url 'question-update' question.pk %}">Atualizar enquete</a></li>
-    </ul>
-{% endblock content %}
+{% block content %} {# "miolo" do _layout1.html #}
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Pergunta</h5>
+    </div>
+    <div class="card-body">
+        {% if question.author %}
+            <strong>Autor:</strong> {{ question.author.username }}
+        {% else %}
+            <strong>Autor:</strong> Desconhecido
+        {% endif %} <br>
+        <p>
+            {{ question.question_text }}
+            <a href="{% url 'poll_edit' pk=question.id %}" class="link-secondary">
+                Editar
+            </a> &nbsp;
+            <a href="{% url 'poll_delete' pk=question.id %}" class="link-secondary">
+                Excluir
+            </a>
+        </p>
+        <p>Data de publicação: {{ question.pub_date }}</p>
+    </div>
+</div>
+{% endblock %}
