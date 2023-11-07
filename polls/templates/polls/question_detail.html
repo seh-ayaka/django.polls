@@ -7,20 +7,38 @@
     </div>
     <div class="card-body">
         {% if question.author %}
-            <strong>Autor:</strong> {{ question.author.username }}
+            <span>Autor: {{ question.author.username }}</span>
         {% else %}
             <strong>Autor:</strong> Desconhecido
         {% endif %} <br>
         <p>
             {{ question.question_text }}
-            <a href="{% url 'poll_edit' pk=question.id %}" class="link-secondary">
+            <a href="{% url 'question-update' pk=question.id %}" class="link-secondary">
                 Editar
             </a> &nbsp;
-            <a href="{% url 'poll_delete' pk=question.id %}" class="link-secondary">
+            <a href="{% url 'question-delete' pk=question.id %}" class="link-secondary">
                 Excluir
             </a>
         </p>
         <p>Data de publicação: {{ question.pub_date }}</p>
+        {% if total_votes %}]
+            <p>Total de votos: {{ total_votes }}</p>
+        {% endif %}
+        <form action="{% url 'poll_vote' question_id=question.id %}" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend><h1>{{ question.question_text }}</h1></legend>
+                {% for choice in question.choice_set.all %}
+                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+                {% empty %}
+                    <h5>Não há alternativas cadastradas</h5>
+                {% endfor %}
+            </fieldset>
+            {% if question.choice_set.all %}
+                <input type="submit" value="Votar">
+            {% endif %}
+        </form>
     </div>
 </div>
 {% endblock %}

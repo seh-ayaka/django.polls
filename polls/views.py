@@ -1,8 +1,10 @@
-from django.shortcuts import get_object_or_404, render
+from multiprocessing import context
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Choice, Question
+from django.db.models import Sum
 
 def index(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
@@ -15,8 +17,8 @@ def detail(request, question_id):
 def results(request, question_id):
     return HttpResponse(f"Resultado da pergunta de número{question_id}")
   
-def vote(request, question_id):
-    return HttpResponse(f"Você vai votar na pergunta de número {question_id}")
+# def vote(request, question_id):
+#     return HttpResponse(f"Você vai votar na pergunta de número {question_id}")
 
 from django.views.generic import CreateView, ListView, DetailView, DeleteView, UpdateView
 from django.urls import reverse_lazy
@@ -36,7 +38,7 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        messages.sucess(self.request, self.sucess_message)
+        messages.success(self.request, self.sucess_message)
         return super(QuestionCreateView, self).form_valid(form)
 
 class QuestionListView(ListView):
@@ -46,7 +48,16 @@ class QuestionListView(ListView):
 
 class QuestionDetailView(DetailView):
     model = Question
+    template_name= 'polls/question_detail.html'
     context_object_name = 'question'
+
+    def get_context_data(self, **kwargs):
+        context = super(QuestionDetailView, self).get_context_data(**kwargs)
+        votes = Choice.objects.filter(question=context['question']).aggregate(total=Sum('votes')) or 0
+        context ['total_votes'] = votes.get('total')
+
+        return context
+    
 
 from django.contrib import messages
 
@@ -146,3 +157,20 @@ class ChoiceDeleteView(LoginRequiredMixin, DeleteView):
         question_id = self.object.question.id
         print(question_id)
         return reverse_lazy('poll_edit', kwargs={'pk': question_id})
+
+def vote(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    if request.method == 'POST':
+        try:
+            selected_choice = question.choice_set.get(pk=request.POST["choice"])
+        except (KeyError, Choice.DoesNotExist):
+            messages.error(request, 'Selecione uma alternativa para votar!')
+        else:
+            selected_choice.votes += 1
+            selected_choice.save()
+            messages.success(request, 'Seu voto foi registrado com sucesso!')
+            return redirect(reverse_lazy("question-detail", args=(question.id,)))
+            
+    context = {'question': question}
+    return render(request, 'polls/question_detail.html', context)
+    
