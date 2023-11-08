@@ -43,4 +43,8 @@ urlpatterns = [
         views.vote,
         name="poll_vote"
     ),
+    path('pergunta/<int:question_id>/results',
+        views.results,
+        name="poll_results"
+    ),
 ]
